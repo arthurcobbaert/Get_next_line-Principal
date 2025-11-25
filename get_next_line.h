@@ -26,7 +26,6 @@
 char	*get_next_line(int fd);
 int		has_newline(char *stash);
 int		ft_strlen(char *str);
-size_t	ft_strlcpy(char *dst, char *src, size_t size);
 char	*ft_strchr(char *s, int c);
 char	*ft_strdup(char *s1);
 char	*ft_substr(char *s, unsigned int start, size_t len);

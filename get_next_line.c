@@ -12,31 +12,6 @@
 
 #include "get_next_line.h"
 
-char	*get_next_line(int fd)
-{
-	static char	*stash;
-	char		*line;
-	char		*buf;
-
-	buf = malloc(BUFFER_SIZE + 1);
-	if (!buf)
-		return (NULL);
-	if (BUFFER_SIZE <= 0 || fd < 0)
-	{
-		free (buf);
-		buf = NULL;
-		return (NULL);
-	}
-	stash = read_file(fd, stash, buf);
-	free (buf);
-	buf = NULL;
-	if (!stash)
-		return (NULL);
-	line = get_line(stash);
-	stash = left_stash(stash);
-	return (line);
-}
-
 static char	*read_file(int fd, char *stash, char *buf)
 {
 	char		*tmp;
@@ -107,4 +82,29 @@ static char	*left_stash(char *stash)
 	stash = NULL;
 	res[j] = '\0';
 	return (res);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*stash;
+	char		*line;
+	char		*buf;
+
+	buf = malloc(BUFFER_SIZE + 1);
+	if (!buf)
+		return (NULL);
+	if (BUFFER_SIZE <= 0 || fd < 0)
+	{
+		free (buf);
+		buf = NULL;
+		return (NULL);
+	}
+	stash = read_file(fd, stash, buf);
+	free (buf);
+	buf = NULL;
+	if (!stash)
+		return (NULL);
+	line = get_line(stash);
+	stash = left_stash(stash);
+	return (line);
 }

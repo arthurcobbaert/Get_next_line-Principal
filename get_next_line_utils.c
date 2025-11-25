@@ -65,7 +65,9 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 	if (!res)
 		return (NULL);
 	i = 0;
-	ft_strlcpy(res, s + start, len + 1);
+	while (start < len)
+		res[i++] = s[start++];
+	res[i] = '\0';
 	return (res);
 }
 
