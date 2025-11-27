@@ -6,7 +6,7 @@
 /*   By: acobbaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 15:44:34 by acobbaer          #+#    #+#             */
-/*   Updated: 2025/11/25 15:45:22 by acobbaer         ###   ########.fr       */
+/*   Updated: 2025/11/27 14:58:03 by acobbaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static char	*read_file(int fd, char *stash, char *buf)
 	char		*tmp;
 	int			chars_read;
 
+	chars_read = 0;
 	while (!has_newline(stash))
 	{
 		chars_read = read(fd, buf, BUFFER_SIZE);
@@ -28,15 +29,14 @@ static char	*read_file(int fd, char *stash, char *buf)
 		else
 			tmp = ft_strjoin(stash, buf);
 		if (!tmp)
-			return (NULL);
+			return (free(stash), NULL);
 		free(stash);
 		stash = tmp;
 	}
 	if (chars_read < 0)
 	{
-		free (stash);
+		free(stash);
 		stash = NULL;
-		return (NULL);
 	}
 	return (stash);
 }
@@ -52,6 +52,8 @@ static char	*get_line(char *stash)
 	if (stash[i] == '\n')
 		i++;
 	line = ft_substr(stash, 0, i);
+	if (!line)
+		return (free(stash), NULL);
 	return (line);
 }
 
@@ -74,7 +76,7 @@ static char	*left_stash(char *stash)
 	}
 	res = malloc(ft_strlen(stash) - i + 1);
 	if (!res)
-		return (NULL);
+		return (free(stash), NULL);
 	j = 0;
 	while (stash[i])
 		res[j++] = stash[i++];
@@ -103,8 +105,10 @@ char	*get_next_line(int fd)
 	free (buf);
 	buf = NULL;
 	if (!stash)
-		return (NULL);
+		return (free(stash), NULL);
 	line = get_line(stash);
+	if (!line)
+		return (free(stash), NULL);
 	stash = left_stash(stash);
 	return (line);
 }
