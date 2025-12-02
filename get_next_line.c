@@ -92,9 +92,10 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		*buf;
 
+	stash = NULL;
 	buf = malloc(BUFFER_SIZE + 1);
 	if (!buf)
-		return (NULL);
+		return (free(stash), NULL);
 	if (BUFFER_SIZE <= 0 || fd < 0)
 	{
 		free (buf);
